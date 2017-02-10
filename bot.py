@@ -1,13 +1,23 @@
 import requests
 import random
+import re
 
 TOKEN = "256779559:AAG_j5feHZhxQXYkeUIKviqKMsPRaoVhv30"
 URL = "https://api.telegram.org/bot" + TOKEN + '/'
 LIMIT = 10
 TIMEOUT = 10
-damnlist = ['Няк', 'Шмякяя',
-            'Мяу', 'Нян', 'Ням']
-cat = ['котяша']
+damnlist = ['Няк?', '*пускаю искры*', '*подпрыгнул*',
+            '*вылизываю промежность*', '*purr purr*',
+            '*ищу взглядом твою обувь*', '*смотрю в сторону*',
+            '*убегаю*', '*смотрю в пустой угол*', '*зашипел*',
+            '*свернулся клубочком*', 'Может погладишь, сука?',
+            'Только поел, перестань', 'Давно обувь менял?',
+            'Это потому что ты - няша', 'Что еще някнешь?',
+            'Хорошего дня, няша!', 'Возможно ты прав',
+            'Не имей сто друзей, а имей сто котов', 'А?',
+            'Я тебе потом отвечу', 'Лениво отвечать',
+            'Твоя мама - хорошая женщина', 'Твой папа - достойный мужчина']
+cat = ['Котяша']
 
 
 def post():
@@ -18,11 +28,11 @@ def post():
 
 
 def responce():
-    rand = random.randint(0, 4)
-    textr = damnlist[rand]
+    rand = random.randint(0, len(damnlist) - 1)
+    answer = damnlist[rand]
     requests.get(URL + 'sendMessage', params={
         'chat_id': chat_id,
-        'text': textr})
+        'text': answer})
 
 
 post()
@@ -44,7 +54,8 @@ if __name__ == '__main__':
                 chat_id = update['message']['chat']['id']
                 text = update['message']['text']
                 user = update['message']['from']['username']
-                if text in cat:
+
+                if re.search(r'Котяш', text):
                     responce()
 
                 print(chat_id, user, text)
