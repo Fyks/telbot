@@ -17,10 +17,9 @@ damnlist = ['Няк?', '*пускаю искры*', '*подпрыгнул*',
             'Не имей сто друзей, а имей сто котов', 'А?',
             'Я тебе потом отвечу', 'Лениво отвечать',
             'Твоя мама - хорошая женщина', 'Твой папа - достойный мужчина']
-cat = ['Котяша']
 
 
-def post():
+def ping():
     ping = requests.get(URL + 'sendMessage', params={
         'chat_id': 237174923,
         'text': 'Heil cats!'})
@@ -32,10 +31,11 @@ def responce():
     answer = damnlist[rand]
     requests.get(URL + 'sendMessage', params={
         'chat_id': chat_id,
-        'text': answer})
+        'text': answer,
+        'reply_to_message_id': message_id})
 
 
-post()
+ping()
 
 
 if __name__ == '__main__':
@@ -52,6 +52,7 @@ if __name__ == '__main__':
         for update in get_updates.json()['result']:
             try:
                 chat_id = update['message']['chat']['id']
+                message_id = update['message']['message_id']
                 text = update['message']['text']
                 user = update['message']['from']['username']
 
