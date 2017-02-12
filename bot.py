@@ -6,6 +6,7 @@ TOKEN = "256779559:AAG_j5feHZhxQXYkeUIKviqKMsPRaoVhv30"
 URL = "https://api.telegram.org/bot" + TOKEN + '/'
 LIMIT = 10
 TIMEOUT = 10
+file_id = 'CAADAgADTwADAssmAqPwkPUCvuTJAg'
 damnlist = ['Няк?', '*пускаю искры*', '*подпрыгнул*',
             '*вылизываю промежность*', '*purr purr*',
             '*ищу взглядом твою обувь*', '*смотрю в сторону*',
@@ -35,6 +36,13 @@ def responce():
         'reply_to_message_id': message_id})
 
 
+def responce_pic():
+    requests.get(URL + 'sendSticker', params={
+        'chat_id': chat_id,
+        'reply_to_message_id': message_id,
+        'sticker': file_id})
+
+
 ping()
 
 
@@ -57,6 +65,9 @@ if __name__ == '__main__':
                 user = update['message']['from']['username']
 
                 if re.search(r'Котяш', text):
+                    if re.search(r'картинк', text):
+                        responce_pic()
+                        break
                     responce()
 
                 print(chat_id, user, text)
