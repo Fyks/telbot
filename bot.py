@@ -1,12 +1,12 @@
 import requests
 import random
 import re
+import stickers
 
 TOKEN = "256779559:AAG_j5feHZhxQXYkeUIKviqKMsPRaoVhv30"
 URL = "https://api.telegram.org/bot" + TOKEN + '/'
 LIMIT = 10
 TIMEOUT = 10
-file_id = 'CAADAgADTwADAssmAqPwkPUCvuTJAg'
 damnlist = ['Няк?', '*пускаю искры*', '*подпрыгнул*',
             '*вылизываю промежность*', '*purr purr*',
             '*ищу взглядом твою обувь*', '*смотрю в сторону*',
@@ -37,6 +37,8 @@ def responce():
 
 
 def responce_pic():
+    rand = random.randint(0, len(stickers.ANIME) - 1)
+    file_id = stickers.ANIME[rand]
     requests.get(URL + 'sendSticker', params={
         'chat_id': chat_id,
         'reply_to_message_id': message_id,
@@ -65,7 +67,7 @@ if __name__ == '__main__':
                 user = update['message']['from']['username']
 
                 if re.search(r'Котяш', text):
-                    if re.search(r'картинк', text):
+                    if re.search(r'няшу', text):
                         responce_pic()
                         break
                     responce()
