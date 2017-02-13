@@ -70,6 +70,8 @@ if __name__ == '__main__':
                     if re.search(r'няшу', text):
                         responce_pic()
                         break
+                    elif re.search(r'селфи', text):
+                        responce_pic()
                     responce()
 
                 print(chat_id, user, text)
