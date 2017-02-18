@@ -17,8 +17,8 @@ def ping():
 
 
 def responce():
-    rand = random.randint(0, len(stickers.damnlist) - 1)
-    answer = stickers.damnlist[rand]
+    rand = random.randint(0, len(stickers.rlist) - 1)
+    answer = stickers.rlist[rand]
     requests.get(URL + 'sendMessage', params={
         'chat_id': chat_id,
         'text': answer,
@@ -55,11 +55,8 @@ if __name__ == '__main__':
                 text = update['message']['text']
                 user = update['message']['from']['username']
 
-                if re.search(r'Котяш', text):
-                    if re.search(r'няшу', text):
-                        responce_pic()
-                        break
-                    elif re.search(r'селфи', text):
+                if re.search(r'Бот', text):
+                    if re.search(r'стик', text):
                         responce_pic()
                         break
                     responce()
