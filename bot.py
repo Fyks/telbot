@@ -7,17 +7,6 @@ TOKEN = "256779559:AAG_j5feHZhxQXYkeUIKviqKMsPRaoVhv30"
 URL = "https://api.telegram.org/bot" + TOKEN + '/'
 LIMIT = 10
 TIMEOUT = 10
-damnlist = ['Няк?', '*пускаю искры*', '*подпрыгнул*',
-            '*вылизываю промежность*', '*purr purr*',
-            '*ищу взглядом твою обувь*', '*смотрю в сторону*',
-            '*убегаю*', '*смотрю в пустой угол*', '*зашипел*',
-            '*свернулся клубочком*', 'Может погладишь, сука?',
-            'Только поел, перестань', 'Давно обувь менял?',
-            'Это потому что ты - няша', 'Что еще някнешь?',
-            'Хорошего дня, няша!', 'Возможно ты прав',
-            'Не имей сто друзей, а имей сто котов', 'А?',
-            'Я тебе потом отвечу', 'Лениво отвечать',
-            'Твоя мама - хорошая женщина', 'Твой папа - достойный мужчина']
 
 
 def ping():
@@ -28,8 +17,8 @@ def ping():
 
 
 def responce():
-    rand = random.randint(0, len(damnlist) - 1)
-    answer = damnlist[rand]
+    rand = random.randint(0, len(stickers.damnlist) - 1)
+    answer = stickers.damnlist[rand]
     requests.get(URL + 'sendMessage', params={
         'chat_id': chat_id,
         'text': answer,
@@ -72,6 +61,7 @@ if __name__ == '__main__':
                         break
                     elif re.search(r'селфи', text):
                         responce_pic()
+                        break
                     responce()
 
                 print(chat_id, user, text)
