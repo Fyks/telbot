@@ -2,9 +2,9 @@ import requests
 import random
 import re
 import stickers
+import token
 
-TOKEN = "256779559:AAG_j5feHZhxQXYkeUIKviqKMsPRaoVhv30"
-URL = "https://api.telegram.org/bot" + TOKEN + '/'
+URL = "https://api.telegram.org/bot" + token.TOKEN + '/'
 LIMIT = 10
 TIMEOUT = 10
 
@@ -53,15 +53,15 @@ if __name__ == '__main__':
                 chat_id = update['message']['chat']['id']
                 message_id = update['message']['message_id']
                 text = update['message']['text']
-                user = update['message']['from']['username']
+                user_id = update['message']['from']['id']
 
-                if re.search(r'Бот', text):
-                    if re.search(r'стик', text):
+                if re.search(r'Котяш', text):
+                    if re.search(r'няш', text):
                         responce_pic()
                         break
                     responce()
 
-                print(chat_id, user, text)
+                print(chat_id, user_id, text)
 
             except KeyError:
                 pass
