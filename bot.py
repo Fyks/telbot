@@ -2,9 +2,9 @@ import requests
 import random
 import re
 import stickers
-import token
+import teltoken
 
-URL = "https://api.telegram.org/bot" + token.TOKEN + '/'
+URL = "https://api.telegram.org/bot" + teltoken.TOKEN + '/'
 LIMIT = 10
 TIMEOUT = 10
 
