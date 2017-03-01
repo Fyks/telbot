@@ -18,16 +18,15 @@ def tel_request(method, params):
     return response.json()['result']
 
 
-def send_message(chat_id, reply_to_message_id):
-    tel_request('sendMessage', params={
+def send_message(chat_id, text):
+    return tel_request('sendMessage', params={
         'chat_id': chat_id,
-        'reply_to_message_id': message_id,
         'text': text
     })
 
 
-def send_sticker(chat_id, reply_to_message_id, sticker):
-    tel_request('sendSticker', params={
+def send_sticker(chat_id, message_id, sticker):
+    return tel_request('sendSticker', params={
         'chat_id': chat_id,
         'reply_to_message_id': message_id,
         'sticker': sticker
@@ -45,10 +44,7 @@ def rand_cat_sticker():
 
 
 def ping():
-    tel_request('sendMessage', params={
-        'chat_id': 237174923,
-        'text': 'OK'
-    })
+    return send_message(237174923, 'OK')
 
 
 if __name__ == '__main__':
