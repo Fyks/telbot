@@ -1,6 +1,6 @@
+import requests
 import random
 import re
-import requests
 import rlist
 import teltoken
 
@@ -9,76 +9,61 @@ LIMIT = 10
 TIMEOUT = 10
 
 
-def get(method, params):
-    return requests.get(URL + method, params=params)
-
-
-def tel_request(params):
-    response = get('getUpdates', params=params)
-    return response.json()['result']
-
-
-def send_message(chat_id, reply_to_message_id):
-    get('sendMessage', params={
-        'chat_id': chat_id,
-        'reply_to_message_id': message_id,
-        'text': rand_text()
-    })
-
-
-def send_sticker(chat_id, reply_to_message_id):
-    get('sendSticker', params={
-        'chat_id': chat_id,
-        'reply_to_message_id': message_id,
-        'sticker': rand_sticker()
-    })
-
-
-def rand_sticker():
-    rand = random.randint(0, len(rlist.ANIME) - 1)
-    sticker = rlist.ANIME[rand]
-    return sticker
-
-
-def rand_text():
-    rand = random.randint(0, len(rlist.rlist) - 1)
-    text = rlist.rlist[rand]
-    return text
-
-
 def ping():
-    get('sendMessage', params={
+    ping = requests.get(URL + 'sendMessage', params={
         'chat_id': 237174923,
-        'text': 'OK'
-    })
+        'text': 'Heil cats!'})
+    print(ping, 'online')
+
+
+def response():
+    rand = random.randint(0, len(rlist.rlist) - 1)
+    answer = rlist.rlist[rand]
+    requests.get(URL + 'sendMessage', params={
+        'chat_id': chat_id,
+        'text': answer,
+        'reply_to_message_id': message_id})
+
+
+def response_pic():
+    rand = random.randint(0, len(rlist.ANIME) - 1)
+    file_id = rlist.ANIME[rand]
+    requests.get(URL + 'sendSticker', params={
+        'chat_id': chat_id,
+        'reply_to_message_id': message_id,
+        'sticker': file_id})
 
 
 if __name__ == '__main__':
 
     ping()
 
-    update_id = 0
+    last_update_id = 0
 
     while True:
 
-        upd = tel_request(params={
+        get_updates = requests.get(URL + 'getUpdates', params={
             'limit': LIMIT,
             'timeout': TIMEOUT,
-            'offset': update_id + 1})
+            'offset': last_update_id + 1})
 
-        for i in upd:
+        for update in get_updates.json()['result']:
             try:
-                chat_id = i['message']['chat']['id']
-                message_id = i['message']['message_id']
-                text = i['message']['text']
+                chat_id = update['message']['chat']['id']
+                message_id = update['message']['message_id']
+                text = update['message']['text']
+                user_id = update['message']['from']['id']
 
                 if re.search(r'Котяш', text):
                     if re.search(r'няш', text):
-                        send_sticker(chat_id, message_id)
+                        response_pic()
                         break
-                    send_message(chat_id, message_id)
+                    response()
+
+                    print(chat_id, user_id, text)
+
             except KeyError:
                 pass
 
-        if len(upd) > 0:
-            update_id = int(upd[-1]["update_id"])
+        if len(get_updates.json()["result"]) > 0:
+            last_update_id = int(get_updates.json()["result"][-1]["update_id"])
