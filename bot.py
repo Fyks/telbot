@@ -22,28 +22,28 @@ def send_message(chat_id, reply_to_message_id):
     get('sendMessage', params={
         'chat_id': chat_id,
         'reply_to_message_id': message_id,
-        'text': rand_text()
+        'text': text
     })
 
 
-def send_sticker(chat_id, reply_to_message_id):
+def send_sticker(chat_id, reply_to_message_id, sticker):
     get('sendSticker', params={
         'chat_id': chat_id,
         'reply_to_message_id': message_id,
-        'sticker': rand_sticker()
+        'sticker': sticker
     })
 
 
-def rand_sticker():
+def rand_anime_sticker(chat_id, reply_to_message_id):
     rand = random.randint(0, len(rlist.ANIME) - 1)
     sticker = rlist.ANIME[rand]
-    return sticker
+    send_sticker(chat_id, reply_to_message_id, sticker)
 
 
-def rand_text():
-    rand = random.randint(0, len(rlist.rlist) - 1)
-    text = rlist.rlist[rand]
-    return text
+def rand_cat_sticker(chat_id, reply_to_message_id):
+    rand = random.randint(0, len(rlist.CATS) - 1)
+    sticker = rlist.CATS[rand]
+    send_sticker(chat_id, reply_to_message_id, sticker)
 
 
 def ping():
@@ -74,9 +74,9 @@ if __name__ == '__main__':
 
                 if re.search(r'Котяш', text):
                     if re.search(r'няш', text):
-                        send_sticker(chat_id, message_id)
+                        rand_anime_sticker(chat_id, message_id)
                         break
-                    send_message(chat_id, message_id)
+                    rand_cat_sticker(chat_id, message_id)
             except KeyError:
                 pass
 
