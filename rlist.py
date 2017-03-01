@@ -1,0 +1,25 @@
+ANIME = ['CAADAgADphUAAuCjggefWVbc25y8SwI',
+         'CAADAgADpxUAAuCjggc3Rrbz0slw-QI',
+         'CAADAgADqBUAAuCjggffM9zsGXHlnAI',
+         'CAADAgADqhUAAuCjggfhAAHKOPPTj1IC',
+         'CAADAgADsBUAAuCjggfFxAscuqfs1gI',
+         'CAADAgADtRUAAuCjggcfYCHGsd6p6QI',
+         'CAADAgADsxUAAuCjggfr70QwStsejQI',
+         'CAADAgADtBUAAuCjggcyCetXGf-GHAI',
+         'CAADAgADthUAAuCjggdERi8xXtF-vQI',
+         'CAADAgADtxUAAuCjggf6twXK99hfDAI',
+         'CAADAgADuBUAAuCjggcPJZCwRcf9WwI',
+         'CAADAgADuRUAAuCjggfneX6_voT0KwI',
+         'CAADAgADuhUAAuCjggctpk-q4xQNnwI',
+         'CAADAgADvBUAAuCjggdYP4LkycCt1AI',
+         'CAADAgADvhUAAuCjggfTE145KhwGBwI',
+         'CAADAgADvxUAAuCjggfuWIZAuHQidQI',
+         'CAADAgADwRUAAuCjggdnzH_jATfkHQI',
+         'CAADAgADxxUAAuCjggdkK5ZDT-yAFQI',
+         'CAADAgADyRUAAuCjggdwExtKCc1Z-QI',
+         'CAADAgADyhUAAuCjggeQLnYKiruNWgI',
+         'CAADAgADyxUAAuCjgge9hwaqhK1vJQI',
+         'CAADAgADzBUAAuCjggecUcfv3H1QEQI']
+CATS = []
+
+rlist = ['one', 'two', 'three']
