@@ -64,10 +64,12 @@ if __name__ == '__main__':
             try:
                 chat_id = i['message']['chat']['id']
                 message_id = i['message']['message_id']
-                text = i['message']['text']
+                text = i['message']['text'].lower()
 
-                if re.search(r'Котяш', text):
-                    if re.search(r'Котяш.+няш', text):
+                if re.search(r'привет', text):
+                    send_sticker(chat_id, message_id, rlist.HI)
+                elif re.search(r'котяш', text):
+                    if re.search(r'котяш.+няшу', text):
                         send_sticker(chat_id, message_id, rand_anime_sticker())
                         break
                     send_sticker(chat_id, message_id, rand_cat_sticker())
