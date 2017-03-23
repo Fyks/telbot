@@ -1,3 +1,4 @@
+import parcer
 import random
 import re
 import requests
@@ -7,6 +8,7 @@ import teltoken
 URL = "https://api.telegram.org/bot" + teltoken.TOKEN + '/'
 LIMIT = 10
 TIMEOUT = 10
+DOMAIN = 'https://alpha.wallhaven.cc/search?q=urban&categories=111&purity=110&sorting=random&order=desc&page=2'
 
 
 def get(method, params):
@@ -18,9 +20,10 @@ def tel_request(method, params):
     return response.json()['result']
 
 
-def send_message(chat_id, text):
+def send_message(chat_id, message_id, text):
     return tel_request('sendMessage', params={
         'chat_id': chat_id,
+        'reply_to_message_id': message_id,
         'text': text
     })
 
@@ -44,7 +47,7 @@ def rand_cat_sticker():
 
 
 def ping():
-    return send_message(237174923, 'OK')
+    return send_message(237174923, None, 'OK')
 
 
 if __name__ == '__main__':
@@ -66,12 +69,18 @@ if __name__ == '__main__':
                 message_id = i['message']['message_id']
                 text = i['message']['text'].lower()
 
-                if re.search(r'привет', text):
-                    send_sticker(chat_id, message_id, rlist.HI)
-                elif re.search(r'котяш', text):
-                    if re.search(r'котяш.+няшу', text):
-                        send_sticker(chat_id, message_id, rand_anime_sticker())
+                if re.search(r'test', text):
+                    if re.search(r'hi', text):
+                        send_sticker(chat_id, message_id, rlist.HI)
                         break
+                    elif re.search(r'sticker', text):
+                        send_sticker(chat_id, message_id, rand_cat_sticker())
+                        break
+                    elif re.search(r'pic', text):
+                        send_message(chat_id, message_id,
+                                     parcer.final_link(DOMAIN))
+                        break
+
                     send_sticker(chat_id, message_id, rand_cat_sticker())
 
             except KeyError:
