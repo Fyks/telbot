@@ -36,14 +36,9 @@ def send_sticker(chat_id, message_id, sticker):
     })
 
 
-def rand_anime_sticker():
-    rand = random.randint(0, len(rlist.ANIME) - 1)
-    return rlist.ANIME[rand]
-
-
-def rand_cat_sticker():
-    rand = random.randint(0, len(rlist.CATS) - 1)
-    return rlist.CATS[rand]
+def rand_sticker(stickerpack):
+    rand = random.randint(0, len(stickerpack) - 1)
+    return stickerpack[rand]
 
 
 def ping():
@@ -72,16 +67,19 @@ if __name__ == '__main__':
                 if re.search(r'test', text):
                     if re.search(r'hi', text):
                         send_sticker(chat_id, message_id, rlist.HI)
-                        break
-                    elif re.search(r'sticker', text):
-                        send_sticker(chat_id, message_id, rand_cat_sticker())
-                        break
+                        continue
+                    elif re.search(r'nya', text):
+                        send_sticker(chat_id, message_id,
+                                     rand_sticker(rlist.ANIME))
+                        continue
                     elif re.search(r'pic', text):
                         send_message(chat_id, message_id,
                                      parcer.final_link(DOMAIN))
-                        break
+                        continue
 
-                    send_sticker(chat_id, message_id, rand_cat_sticker())
+                    else:
+                        send_sticker(chat_id, message_id,
+                                     rand_sticker(rlist.CATS))
 
             except KeyError:
                 pass
