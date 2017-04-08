@@ -1,4 +1,3 @@
-import parcer
 import random
 import re
 import requests
@@ -8,7 +7,8 @@ import teltoken
 URL = "https://api.telegram.org/bot" + teltoken.TOKEN + '/'
 LIMIT = 10
 TIMEOUT = 10
-DOMAIN = 'https://alpha.wallhaven.cc/search?q=urban&categories=111&purity=110&sorting=random&order=desc&page=2'
+DOMAIN = 'https://alpha.wallhaven.cc/random'
+REDHEAD = 'https://alpha.wallhaven.cc/search?q=ginger'
 
 
 def get(method, params):
@@ -65,21 +65,7 @@ if __name__ == '__main__':
                 text = i['message']['text'].lower()
 
                 if re.search(r'test', text):
-                    if re.search(r'hi', text):
-                        send_sticker(chat_id, message_id, rlist.HI)
-                        continue
-                    elif re.search(r'nya', text):
-                        send_sticker(chat_id, message_id,
-                                     rand_sticker(rlist.ANIME))
-                        continue
-                    elif re.search(r'pic', text):
-                        send_message(chat_id, message_id,
-                                     parcer.final_link(DOMAIN))
-                        continue
-
-                    else:
-                        send_sticker(chat_id, message_id,
-                                     rand_sticker(rlist.CATS))
+                    send_sticker(chat_id, message_id, rand_sticker(rlist.CATS))
 
             except KeyError:
                 pass
