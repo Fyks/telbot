@@ -1,5 +1,4 @@
 import random
-import re
 import requests
 import rlist
 import teltoken
@@ -64,7 +63,7 @@ if __name__ == '__main__':
                 message_id = i['message']['message_id']
                 text = i['message']['text'].lower()
 
-                if re.search(r'test', text):
+                if 'test' in text:
                     send_sticker(chat_id, message_id, rand_sticker(rlist.CATS))
 
             except KeyError:
