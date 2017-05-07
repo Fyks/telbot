@@ -40,6 +40,12 @@ def rand_sticker(stickerpack):
     return stickerpack[rand]
 
 
+def log(text):
+    conf_log = open('log1.txt', 'a')
+    conf_log.write(username + '\t' + text + '\n')
+    conf_log.close()
+
+
 def ping():
     return send_message(237174923, None, 'OK')
 
@@ -61,12 +67,16 @@ if __name__ == '__main__':
             try:
                 chat_id = i['message']['chat']['id']
                 message_id = i['message']['message_id']
+                username = i['message']['from']['first_name']
                 text = i['message']['text'].lower()
+                log(text)
+                print(username, text)
 
-                if 'test' in text:
+                if 'kat' in text:
                     send_sticker(chat_id, message_id, rand_sticker(rlist.CATS))
 
             except KeyError:
+                print('Key_error')
                 pass
 
         if len(upd) > 0:
