@@ -1,6 +1,10 @@
 import random
+import re
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup as BS
+
+
+DOMAIN = 'https://alpha.wallhaven.cc/'
 
 
 def get_page(domain):
@@ -29,6 +33,12 @@ def getting_pic(domain):
     pic = parse_page(getting_link(domain)).find_all('img', id='wallpaper')
     for i in pic:
         return i.get('src')
+
+
+def domain_modifier(source):
+    key = re.search('\\\\\w+', source).group()
+    link = DOMAIN + 'search?q=' + key.replace('\\', '')
+    return link
 
 
 def final_link(domain):

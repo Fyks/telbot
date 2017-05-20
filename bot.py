@@ -1,38 +1,39 @@
 import random
 import requests
-import rlist
 import teltoken
+import blacklist
+import parcer
 
 URL = "https://api.telegram.org/bot" + teltoken.TOKEN + '/'
 LIMIT = 10
 TIMEOUT = 10
-DOMAIN = 'https://alpha.wallhaven.cc/random'
-REDHEAD = 'https://alpha.wallhaven.cc/search?q=ginger'
 
 
 def get(method, params):
     return requests.get(URL + method, params=params)
 
 
-def tel_request(method, params):
-    response = get(method, params=params)
-    return response.json()['result']
+def request(method, params):
+    response = get(method, params=params).json()['result']
+    return response
 
 
 def send_message(chat_id, message_id, text):
-    return tel_request('sendMessage', params={
+    params = {
         'chat_id': chat_id,
         'reply_to_message_id': message_id,
         'text': text
-    })
+    }
+    return request('sendMessage', params)
 
 
 def send_sticker(chat_id, message_id, sticker):
-    return tel_request('sendSticker', params={
+    params = {
         'chat_id': chat_id,
         'reply_to_message_id': message_id,
         'sticker': sticker
-    })
+    }
+    return request('sendSticker', params)
 
 
 def rand_sticker(stickerpack):
@@ -58,7 +59,7 @@ if __name__ == '__main__':
 
     while True:
 
-        upd = tel_request('getUpdates', params={
+        upd = request('getUpdates', params={
             'limit': LIMIT,
             'timeout': TIMEOUT,
             'offset': update_id + 1})
@@ -72,8 +73,16 @@ if __name__ == '__main__':
                 log(text)
                 print(username, text)
 
-                if 'kat' in text:
-                    send_sticker(chat_id, message_id, rand_sticker(rlist.CATS))
+                if text in blacklist.black_list:
+                    send_message(chat_id, message_id, 'хуйня')
+                if 'gimme' in text:
+                    try:
+                        link = parcer.domain_modifier(text)
+                        send_message(chat_id, message_id,
+                                     parcer.final_link(link))
+                    except ValueError:
+                        send_message(chat_id, message_id,
+                                     'Not found ¯\\_(ツ)_/¯')
 
             except KeyError:
                 print('Key_error')
