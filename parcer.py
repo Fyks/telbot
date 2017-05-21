@@ -1,5 +1,4 @@
 import random
-import re
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup as BS
 
@@ -35,11 +34,12 @@ def getting_pic(domain):
         return i.get('src')
 
 
-def domain_modifier(source):
-    key = re.search('\\\\\w+', source).group()
-    link = DOMAIN + 'search?q=' + key.replace('\\', '')
+def link_modifier(source):
+    key = source.replace('\\', '')
+    random_page = str(random.randint(1, 5))
+    link = '{0}search?q={1}&page={2}'.format(DOMAIN, key, random_page)
     return link
 
 
-def final_link(domain):
+def picture(domain):
     return 'https:' + getting_pic(domain)

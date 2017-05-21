@@ -1,4 +1,4 @@
-import random
+import re
 import requests
 import teltoken
 import blacklist
@@ -36,11 +36,6 @@ def send_sticker(chat_id, message_id, sticker):
     return request('sendSticker', params)
 
 
-def rand_sticker(stickerpack):
-    rand = random.randint(0, len(stickerpack) - 1)
-    return stickerpack[rand]
-
-
 def log(text):
     conf_log = open('log1.txt', 'a')
     conf_log.write(username + '\t' + text + '\n')
@@ -73,16 +68,29 @@ if __name__ == '__main__':
                 log(text)
                 print(username, text)
 
-                if text in blacklist.black_list:
+                controller = {'blacklist': blacklist.black_list,
+                              'gimme': '',
+                              'del': ''}
+
+                if text in controller['blacklist']:
                     send_message(chat_id, message_id, 'хуйня')
+
                 if 'gimme' in text:
-                    try:
-                        link = parcer.domain_modifier(text)
+
+                    search_pattern = re.compile('\\\\\w+')
+                    keyword = search_pattern.search(text)
+
+                    if keyword:
+                        try:
+                            link = parcer.link_modifier(keyword.group())
+                            send_message(chat_id, message_id,
+                                         parcer.picture(link))
+                        except ValueError:
+                            send_message(chat_id, message_id,
+                                         'Not found ¯\\_(ツ)_/¯')
+                    else:
                         send_message(chat_id, message_id,
-                                     parcer.final_link(link))
-                    except ValueError:
-                        send_message(chat_id, message_id,
-                                     'Not found ¯\\_(ツ)_/¯')
+                                     'Add "\\" before keyword')
 
             except KeyError:
                 print('Key_error')
