@@ -7,6 +7,9 @@ import parcer
 URL = "https://api.telegram.org/bot" + teltoken.TOKEN + '/'
 LIMIT = 10
 TIMEOUT = 10
+controller = {'blacklist': blacklist.black_list,
+              'gimme': '',
+              'del': ''}
 
 
 def get(method, params):
@@ -36,6 +39,19 @@ def send_sticker(chat_id, message_id, sticker):
     return request('sendSticker', params)
 
 
+def delete_message(chat_id, message_id):
+    params = {
+        'chat_id': chat_id,
+        'message_id': message_id
+    }
+    return get('deleteMessage', params)
+
+
+def message_canceller(user_id, message_id):
+    # some shit
+    return delete_message(user_id, message_id)
+
+
 def log(text):
     conf_log = open('log1.txt', 'a')
     conf_log.write(username + '\t' + text + '\n')
@@ -63,14 +79,11 @@ if __name__ == '__main__':
             try:
                 chat_id = i['message']['chat']['id']
                 message_id = i['message']['message_id']
+                user_id = i['message']['from']['id']
                 username = i['message']['from']['first_name']
                 text = i['message']['text'].lower()
                 log(text)
-                print(username, text)
-
-                controller = {'blacklist': blacklist.black_list,
-                              'gimme': '',
-                              'del': ''}
+                print(user_id, text)
 
                 if text in controller['blacklist']:
                     send_message(chat_id, message_id, 'хуйня')
