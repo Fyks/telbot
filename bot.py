@@ -44,12 +44,13 @@ def delete_message(chat_id, message_id):
         'chat_id': chat_id,
         'message_id': message_id
     }
-    return get('deleteMessage', params)
+    return request('deleteMessage', params)
 
 
-def message_canceller(user_id, message_id):
-    # some shit
-    return delete_message(user_id, message_id)
+def message_canceller(user_id, message):
+    if message['from']['id'] == user_id:
+        message_id = message['message_id']
+        return delete_message(user_id, message_id)
 
 
 def log(text):
@@ -83,7 +84,7 @@ if __name__ == '__main__':
                 username = i['message']['from']['first_name']
                 text = i['message']['text'].lower()
                 log(text)
-                print(user_id, text)
+                print(username, text)
 
                 if text in controller['blacklist']:
                     send_message(chat_id, message_id, 'хуйня')
@@ -104,6 +105,9 @@ if __name__ == '__main__':
                     else:
                         send_message(chat_id, message_id,
                                      'Add "\\" before keyword')
+
+                if 'lolka' in text:
+                    delete_message(chat_id, message_id)
 
             except KeyError:
                 print('Key_error')
