@@ -68,6 +68,7 @@ if __name__ == '__main__':
     ping()
 
     update_id = 0
+    mute_id = ''
 
     while True:
 
@@ -86,8 +87,8 @@ if __name__ == '__main__':
                 log(text)
                 print(username, text)
 
-                if text in controller['blacklist']:
-                    send_message(chat_id, message_id, 'хуйня')
+#                if text in controller['blacklist']:
+#                    send_message(chat_id, message_id, 'хуйня')
 
                 if 'gimme' in text:
 
@@ -106,7 +107,11 @@ if __name__ == '__main__':
                         send_message(chat_id, message_id,
                                      'Add "\\" before keyword')
 
-                if 'lolka' in text:
+                if 'mute' in text:
+                    mute_id = i['message']['reply_to_message']['from']['id']
+
+                if user_id == mute_id:
+                    print('okay')
                     delete_message(chat_id, message_id)
 
             except KeyError:
