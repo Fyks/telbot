@@ -7,6 +7,8 @@ import parcer
 URL = "https://api.telegram.org/bot" + teltoken.TOKEN + '/'
 LIMIT = 10
 TIMEOUT = 10
+
+# need to end this
 controller = {'blacklist': blacklist.black_list,
               'gimme': '',
               'del': ''}
@@ -39,18 +41,20 @@ def send_sticker(chat_id, message_id, sticker):
     return request('sendSticker', params)
 
 
+def uniq_id_checker(from_id, mute_id_list):
+    return from_id in mute_id_list
+
+
+def message_canceller(user_id, message):
+    pass
+
+
 def delete_message(chat_id, message_id):
     params = {
         'chat_id': chat_id,
         'message_id': message_id
     }
     return request('deleteMessage', params)
-
-
-def message_canceller(user_id, message):
-    if message['from']['id'] == user_id:
-        message_id = message['message_id']
-        return delete_message(user_id, message_id)
 
 
 def log(text):
@@ -68,7 +72,6 @@ if __name__ == '__main__':
     ping()
 
     update_id = 0
-    mute_id = ''
 
     while True:
 
@@ -76,6 +79,9 @@ if __name__ == '__main__':
             'limit': LIMIT,
             'timeout': TIMEOUT,
             'offset': update_id + 1})
+
+        mute_id = []
+        mute_id_count = {}
 
         for i in upd:
             try:
@@ -107,12 +113,12 @@ if __name__ == '__main__':
                         send_message(chat_id, message_id,
                                      'Add "\\" before keyword')
 
-                if 'mute' in text:
-                    mute_id = i['message']['reply_to_message']['from']['id']
-
                 if user_id == mute_id:
-                    print('okay')
                     delete_message(chat_id, message_id)
+
+                if 'mute' in text:
+                    mute_id = i['message'][
+                        'reply_to_message']['from']['id']
 
             except KeyError:
                 print('Key_error')
