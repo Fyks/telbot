@@ -42,10 +42,16 @@ def send_sticker(chat_id, message_id, sticker):
 
 
 def uniq_id_checker(from_id, mute_id_list):
-    return from_id in mute_id_list
+    return from_id not in mute_id_list
 
 
-def message_canceller(user_id, message):
+def mute_list_append(id):
+    pass
+
+
+def message_canceller(mute_list, user_id, message_id, chat_id):
+    if uniq_id_checker(user_id, mute_list):
+        delete_message(message_id, chat_id)
     pass
 
 
@@ -72,6 +78,8 @@ if __name__ == '__main__':
     ping()
 
     update_id = 0
+    mute_id = []
+    mute_id_count = {}
 
     while True:
 
@@ -79,9 +87,6 @@ if __name__ == '__main__':
             'limit': LIMIT,
             'timeout': TIMEOUT,
             'offset': update_id + 1})
-
-        mute_id = []
-        mute_id_count = {}
 
         for i in upd:
             try:
@@ -113,12 +118,13 @@ if __name__ == '__main__':
                         send_message(chat_id, message_id,
                                      'Add "\\" before keyword')
 
-                if user_id == mute_id:
+                if user_id in mute_id:
                     delete_message(chat_id, message_id)
 
                 if 'mute' in text:
-                    mute_id = i['message'][
-                        'reply_to_message']['from']['id']
+                    mute_id.append(i['message'][
+                        'reply_to_message']['from']['id'])
+                    print(mute_id)
 
             except KeyError:
                 print('Key_error')
