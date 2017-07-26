@@ -1,28 +1,27 @@
 import re
 import requests
-import teltoken
 import blacklist
+# import mute
 import parcer
+import teltoken
 
 URL = "https://api.telegram.org/bot" + teltoken.TOKEN + '/'
 LIMIT = 10
 TIMEOUT = 10
 
-# need to end this
-controller = {'blacklist': blacklist.black_list,
-              'gimme': '',
-              'del': ''}
 
-
+# ссылка + метод + параметры
 def get(method, params):
     return requests.get(URL + method, params=params)
 
 
+# возвращает ответ с сервера в формате json
 def request(method, params):
     response = get(method, params=params).json()['result']
     return response
 
 
+# отправка сообщения
 def send_message(chat_id, message_id, text):
     params = {
         'chat_id': chat_id,
@@ -32,6 +31,7 @@ def send_message(chat_id, message_id, text):
     return request('sendMessage', params)
 
 
+# отправка стикера
 def send_sticker(chat_id, message_id, sticker):
     params = {
         'chat_id': chat_id,
@@ -41,16 +41,34 @@ def send_sticker(chat_id, message_id, sticker):
     return request('sendSticker', params)
 
 
-def uniq_id_checker(from_id, mute_id_list):
-    return from_id not in mute_id_list
+# проверяет сообщение на валидность, на реплай, на наличие mute в тексте
+# добавляет в mute list провинившегося, если его абузит уникальный айди
+# если айди абузера уже есть, просто скипает
+def message_checker(message, list):
+    if message['text']:
+        if message['reply_to_message']['from']['id']:
+            text = message['text'].lower()
+            if 'mute' in text:
+                if message['from']['id'] in list:
+                    print('NO')
+                else:
+                    list[message['from']['id']] = message['reply_to_message']['from']['id']
+                    print('gotcha')
+                    return list
+            else:
+                pass
 
 
-def mute_list_append(id):
-    pass
+def uniq_id(user, accused, list):
+    if user in list:
+        return print('None')
+    else:
+        list[user] = accused
+        return list
 
 
 def message_canceller(mute_list, user_id, message_id, chat_id):
-    if uniq_id_checker(user_id, mute_list):
+    if message_checker(user_id, mute_list):
         delete_message(message_id, chat_id)
     pass
 
@@ -78,11 +96,10 @@ if __name__ == '__main__':
     ping()
 
     update_id = 0
-    mute_id = []
-    mute_id_count = {}
+    mute_id = {}
+    list = {}
 
     while True:
-
         upd = request('getUpdates', params={
             'limit': LIMIT,
             'timeout': TIMEOUT,
@@ -90,16 +107,18 @@ if __name__ == '__main__':
 
         for i in upd:
             try:
+                message = i['message']
                 chat_id = i['message']['chat']['id']
                 message_id = i['message']['message_id']
                 user_id = i['message']['from']['id']
                 username = i['message']['from']['first_name']
                 text = i['message']['text'].lower()
                 log(text)
-                print(username, text)
-
+                print(chat_id, username, user_id, text)
 #                if text in controller['blacklist']:
-#                    send_message(chat_id, message_id, 'хуйня')
+#                    send_message(chat_id, message_id, 'huinya')
+#                if user_id == 223251295:
+#                    delete_message(chat_id, message_id)
 
                 if 'gimme' in text:
 
@@ -118,16 +137,17 @@ if __name__ == '__main__':
                         send_message(chat_id, message_id,
                                      'Add "\\" before keyword')
 
-                if user_id in mute_id:
-                    delete_message(chat_id, message_id)
+#                if user_id in mute.mute_list:
+#                    delete_message(chat_id, message_id)
+#
+#                if 'mute' in text:
+#                    mute_id = i['message']['reply_to_message']['from']['id']
+#                    mute.checker(chat_id, mute_id)
 
-                if 'mute' in text:
-                    mute_id.append(i['message'][
-                        'reply_to_message']['from']['id'])
-                    print(mute_id)
-
+                list = message_checker(message, list)
+                print(list)
             except KeyError:
-                print('Key_error')
+                print('Sticker')
                 pass
 
         if len(upd) > 0:
