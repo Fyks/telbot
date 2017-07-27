@@ -1,14 +1,16 @@
+import requests
+
 mute_list = {}
 mute_count = {}
 mute_timer = {}
 
 
-def delete_message(chat_id, message_id):
+def accused(chat_id, message_id):
     params = {
         'chat_id': chat_id,
         'message_id': message_id
     }
-    return request('deleteMessage', params)
+    return params
 
 
 def mute(chat_id, user_id, message):
@@ -31,30 +33,5 @@ def message_checker(message, list):
 
 # mute count
 def counter(mute_list):
-    if len(list(mute_list.keys())) = 3:
+    if len(list(mute_list.keys())) >= 3:
         print('DING DING DING')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-'''    id = user_id
-    if id in mute_list:
-        if mute_list[id][count] < 2:
-            mute_list[id][count] += 1
-        else:
-            mute(chat_id, id)
-    else:
-        mute_list[id] = {'count': 1}
-'''

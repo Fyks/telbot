@@ -41,12 +41,6 @@ def send_sticker(chat_id, message_id, sticker):
     return request('sendSticker', params)
 
 
-def message_canceller(mute_list, user_id, message_id, chat_id):
-    if message_checker(user_id, mute_list):
-        delete_message(message_id, chat_id)
-    pass
-
-
 def delete_message(chat_id, message_id):
     params = {
         'chat_id': chat_id,
