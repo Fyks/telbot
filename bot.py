@@ -1,7 +1,7 @@
 import re
 import requests
 import blacklist
-# import mute
+import mute
 import parcer
 import teltoken
 
@@ -39,32 +39,6 @@ def send_sticker(chat_id, message_id, sticker):
         'sticker': sticker
     }
     return request('sendSticker', params)
-
-
-# проверяет сообщение на валидность, на реплай, на наличие mute в тексте
-# добавляет в mute list провинившегося, если его абузит уникальный айди
-# если айди абузера уже есть, просто скипает
-def message_checker(message, list):
-    if message['text']:
-        if message['reply_to_message']['from']['id']:
-            text = message['text'].lower()
-            if 'mute' in text:
-                if message['from']['id'] in list:
-                    print('NO')
-                else:
-                    list[message['from']['id']] = message['reply_to_message']['from']['id']
-                    print('gotcha')
-                    return list
-            else:
-                pass
-
-
-def uniq_id(user, accused, list):
-    if user in list:
-        return print('None')
-    else:
-        list[user] = accused
-        return list
 
 
 def message_canceller(mute_list, user_id, message_id, chat_id):
@@ -115,10 +89,6 @@ if __name__ == '__main__':
                 text = i['message']['text'].lower()
                 log(text)
                 print(chat_id, username, user_id, text)
-#                if text in controller['blacklist']:
-#                    send_message(chat_id, message_id, 'huinya')
-#                if user_id == 223251295:
-#                    delete_message(chat_id, message_id)
 
                 if 'gimme' in text:
 
@@ -144,7 +114,7 @@ if __name__ == '__main__':
 #                    mute_id = i['message']['reply_to_message']['from']['id']
 #                    mute.checker(chat_id, mute_id)
 
-                list = message_checker(message, list)
+                list = mute.message_checker(message, list)
                 print(list)
             except KeyError:
                 print('Sticker')
