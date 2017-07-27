@@ -5,7 +5,7 @@ mute_count = {}
 mute_timer = {}
 
 
-def accused(chat_id, message_id):
+def victim(chat_id, message_id):
     params = {
         'chat_id': chat_id,
         'message_id': message_id
