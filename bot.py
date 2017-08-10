@@ -10,6 +10,12 @@ LIMIT = 10
 TIMEOUT = 10
 
 
+def del_message(chat_id, message_id):
+    params = {'chat_id': chat_id,
+              'message_id': message_id}
+    return methods.make_request(URL, 'deleteMessage', params)
+
+
 if __name__ == '__main__':
 
     methods.ping(URL)
@@ -17,6 +23,7 @@ if __name__ == '__main__':
     update_id = 0
     mute_id = {}
     mute_list = {}
+    timestamp = time.gmtime()
 
     while True:
         upd = methods.make_request(URL, 'getUpdates', params={
@@ -52,12 +59,15 @@ if __name__ == '__main__':
                         methods.send_message(URL, chat_id, message_id,
                                              'Add "\\" before keyword')
 
-#                if user_id in mute.mute_list:
-#                    delete_message(chat_id, message_id)
-#
-#                if 'mute' in text:
-#                    mute_id = i['message']['reply_to_message']['from']['id']
-#                    mute.checker(chat_id, mute_id)
+                if 'mute' in text:
+                    timestamp = time.gmtime()
+
+                timer = time.gmtime()
+
+                if timer[4] < timestamp[4] + 1:
+                    print(timer[4], timestamp[4] + 1)
+                else:
+                    print('YES')
 
             except KeyError:
                 print('Sticker')
