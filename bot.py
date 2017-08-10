@@ -1,33 +1,25 @@
 import methods
 import mute
-import re
-import requests
 import parcer
+import re
 import teltoken
+import time
 
 URL = "https://api.telegram.org/bot" + teltoken.TOKEN + '/'
 LIMIT = 10
 TIMEOUT = 10
 
 
-def delete_message(chat_id, message_id):
-    params = {
-        'chat_id': chat_id,
-        'message_id': message_id
-    }
-    return make_request('deleteMessage', params)
-
-
 if __name__ == '__main__':
 
-    ping()
+    methods.ping(URL)
 
     update_id = 0
     mute_id = {}
-    list = {}
+    mute_list = {}
 
     while True:
-        upd = make_request('getUpdates', params={
+        upd = methods.make_request(URL, 'getUpdates', params={
             'limit': LIMIT,
             'timeout': TIMEOUT,
             'offset': update_id + 1})
@@ -40,7 +32,7 @@ if __name__ == '__main__':
                 user_id = i['message']['from']['id']
                 username = i['message']['from']['first_name']
                 text = i['message']['text'].lower()
-                log(text)
+                methods.log(username, text)
                 print(chat_id, username, user_id, text)
 
                 if 'gimme' in text:
@@ -51,14 +43,14 @@ if __name__ == '__main__':
                     if keyword:
                         try:
                             link = parcer.link_modifier(keyword.group())
-                            send_message(chat_id, message_id,
-                                         parcer.picture(link))
+                            methods.send_message(URL, chat_id, message_id,
+                                                 parcer.picture(link))
                         except ValueError:
-                            send_message(chat_id, message_id,
-                                         'Not found ¯\\_(ツ)_/¯')
+                            methods.send_message(URL, chat_id, message_id,
+                                                 'Not found ¯\\_(ツ)_/¯')
                     else:
-                        send_message(chat_id, message_id,
-                                     'Add "\\" before keyword')
+                        methods.send_message(URL, chat_id, message_id,
+                                             'Add "\\" before keyword')
 
 #                if user_id in mute.mute_list:
 #                    delete_message(chat_id, message_id)
@@ -67,8 +59,6 @@ if __name__ == '__main__':
 #                    mute_id = i['message']['reply_to_message']['from']['id']
 #                    mute.checker(chat_id, mute_id)
 
-                list = mute.message_checker(message, list)
-                print(list)
             except KeyError:
                 print('Sticker')
                 pass
