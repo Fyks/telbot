@@ -5,19 +5,18 @@ mute_count = {}
 mute_timer = {}
 
 
-def victim(chat_id, message_id):
-    params = {
-        'chat_id': chat_id,
-        'message_id': message_id
-    }
-    return params
+def restrict_user(chat_id, user_id, can_send_messages=None, can_send_media_messages=None,
+                  can_send_other_messages=None, until_date=None):
+    params = {'chat_id': chat_id,
+              'user_id': user_id,
+              'until_date': until_date,
+              'can_send_messages': can_send_messages,
+              'can_send_media_messages': can_send_media_messages,
+              'can_send_other_messages': can_send_other_messages}
+    return requests.get('restrictChatMember', params)
 
 
-def mute(chat_id, user_id, message):
-    return delete_message(chat_id, user_id)
-
-
-def message_checker(message, list):
+def mute_counter(message, list):
     if 'mute' in message['text'].lower():
         if message['reply_to_message']['from']['id']:
             abuse_id = message['from']['id']

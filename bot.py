@@ -1,7 +1,7 @@
+import methods
+import mute
 import re
 import requests
-import blacklist
-import mute
 import parcer
 import teltoken
 
@@ -10,53 +10,12 @@ LIMIT = 10
 TIMEOUT = 10
 
 
-# ссылка + метод + параметры
-def get(method, params):
-    return requests.get(URL + method, params=params)
-
-
-# возвращает ответ с сервера в формате json
-def request(method, params):
-    response = get(method, params=params).json()['result']
-    return response
-
-
-# отправка сообщения
-def send_message(chat_id, message_id, text):
-    params = {
-        'chat_id': chat_id,
-        'reply_to_message_id': message_id,
-        'text': text
-    }
-    return request('sendMessage', params)
-
-
-# отправка стикера
-def send_sticker(chat_id, message_id, sticker):
-    params = {
-        'chat_id': chat_id,
-        'reply_to_message_id': message_id,
-        'sticker': sticker
-    }
-    return request('sendSticker', params)
-
-
 def delete_message(chat_id, message_id):
     params = {
         'chat_id': chat_id,
         'message_id': message_id
     }
-    return request('deleteMessage', params)
-
-
-def log(text):
-    conf_log = open('log1.txt', 'a')
-    conf_log.write(username + '\t' + text + '\n')
-    conf_log.close()
-
-
-def ping():
-    return send_message(237174923, None, 'OK')
+    return make_request('deleteMessage', params)
 
 
 if __name__ == '__main__':
@@ -68,7 +27,7 @@ if __name__ == '__main__':
     list = {}
 
     while True:
-        upd = request('getUpdates', params={
+        upd = make_request('getUpdates', params={
             'limit': LIMIT,
             'timeout': TIMEOUT,
             'offset': update_id + 1})
