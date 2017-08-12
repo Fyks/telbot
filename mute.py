@@ -17,20 +17,6 @@ def restrict_user(chat_id, user_id, can_send_messages=None, can_send_media_messa
     return requests.get('restrictChatMember', params)
 
 
-def mute_counter(message, list):
-    if 'mute' in message['text'].lower():
-        if message['reply_to_message']['from']['id']:
-            abuse_id = message['from']['id']
-            if abuse_id in list:
-                print('NO')
-            else:
-                list[message['from']['id']] = message['reply_to_message']['from']['id']
-                print('gotcha')
-                return list
-    else:
-        pass
-
-
 def timer(text, chat_id, user_id):
     pass
 
@@ -41,9 +27,10 @@ def checker(message):
         user_id = message['from']['id']
         if message['reply_to_message']['from']['id']:
             reply_id = message['reply_to_message']['from']['id']
-            print(user_id, reply_id)
+            return {user_id: reply_id}
 
 
+# done
 def del_message(chat_id, message_id):
     params = {'chat_id': chat_id,
               'message_id': message_id}
