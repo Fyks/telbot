@@ -38,6 +38,7 @@ if __name__ == '__main__':
                 message_id = i['message']['message_id']
                 user_id = i['message']['from']['id']
                 username = i['message']['from']['first_name']
+#                reply = i['message']['reply_to_message']['from']['id']
                 text = i['message']['text'].lower()
                 methods.log(username, text)
                 print(chat_id, username, user_id, text)
@@ -59,7 +60,7 @@ if __name__ == '__main__':
                         methods.send_message(URL, chat_id, message_id,
                                              'Add "\\" before keyword')
 
-                mute.timer(text)
+                mute.checker(message)
 
             except KeyError:
                 print('Sticker')

@@ -30,7 +30,7 @@ def checker(message):
         user_id = message['from']['id']
         if message['reply_to_message']['from']['id']:
             reply_id = message['reply_to_message']['from']['id']
-            return {user_id: reply_id}
+            return [{user_id: reply_id}, timer()]
 
 
 # done
