@@ -59,15 +59,7 @@ if __name__ == '__main__':
                         methods.send_message(URL, chat_id, message_id,
                                              'Add "\\" before keyword')
 
-                if 'mute' in text:
-                    timestamp = time.gmtime()
-
-                timer = time.gmtime()
-
-                if timer[4] < timestamp[4] + 1:
-                    print(timer[4], timestamp[4] + 1)
-                else:
-                    print('YES')
+                mute.timer(text)
 
             except KeyError:
                 print('Sticker')

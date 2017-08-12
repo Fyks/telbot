@@ -1,4 +1,5 @@
 import requests
+import time
 
 mute_list = {}
 mute_count = {}
@@ -30,7 +31,8 @@ def mute_counter(message, list):
         pass
 
 
-# mute count
-def counter(mute_list):
-    if len(list(mute_list.keys())) >= 3:
-        print('DING DING DING')
+def timer(text):
+    if 'mute' in text:
+        current_timedate = time.gmtime()[:]
+
+        return t
