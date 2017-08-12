@@ -31,8 +31,20 @@ def mute_counter(message, list):
         pass
 
 
-def timer(text):
-    if 'mute' in text:
-        current_timedate = time.gmtime()[:]
+def timer(text, chat_id, user_id):
+    pass
 
-        return t
+
+# done
+def checker(message):
+    if 'mute' in message['text'].lower():
+        user_id = message['from']['id']
+        if message['reply_to_message']['from']['id']:
+            reply_id = message['reply_to_message']['from']['id']
+            print(user_id, reply_id)
+
+
+def del_message(chat_id, message_id):
+    params = {'chat_id': chat_id,
+              'message_id': message_id}
+    return requests.get('deleteMessage', params)
