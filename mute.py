@@ -17,8 +17,11 @@ def restrict_user(chat_id, user_id, can_send_messages=None, can_send_media_messa
     return requests.get('restrictChatMember', params)
 
 
-def timer(text, chat_id, user_id):
-    pass
+# done
+def timer():
+    t = time.gmtime()[:]
+    suspend_time = time.mktime(t[:4] + (t[4]+3,) + t[5:])
+    return suspend_time
 
 
 # done
