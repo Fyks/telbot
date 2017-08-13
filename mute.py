@@ -26,12 +26,13 @@ def timer():
 
 
 # check messages for mute mark
-def checker(message):
+def checker(message, mute_list):
     if 'mute' in message['text'].lower():
-        user_id = message['from']['id']
+        muter = message['from']['id']
         if message['reply_to_message']['from']['id']:
-            reply_id = message['reply_to_message']['from']['id']
-            return {user_id: reply_id}
+            mute_id = message['reply_to_message']['from']['id']
+            chat_id = message['chat']['id']
+            return gen(mute_list, mute_id, muter, chat_id)
 
 
 # delete message
@@ -55,3 +56,4 @@ def gen(mute_list, mute_id, muter, chat_id):
     else:
         mute_list[mute_id] = [muter]
         return mute_list
+
