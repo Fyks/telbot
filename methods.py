@@ -36,4 +36,3 @@ def log(username, text):
 
 def ping(url):
     return send_message(url, 237174923, None, 'Ready')
-
