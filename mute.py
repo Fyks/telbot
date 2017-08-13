@@ -30,7 +30,7 @@ def checker(message):
         user_id = message['from']['id']
         if message['reply_to_message']['from']['id']:
             reply_id = message['reply_to_message']['from']['id']
-            return [{user_id: reply_id}, timer()]
+            return {user_id: reply_id}
 
 
 # done
@@ -38,3 +38,18 @@ def del_message(chat_id, message_id):
     params = {'chat_id': chat_id,
               'message_id': message_id}
     return requests.get('deleteMessage', params)
+
+
+def gen(mute_list, muteid, muter):
+    if muteid in mute_list:
+        if muter in mute_list[muteid]:
+            print('Already in list')
+        else:
+            mute_list[muteid].append(muter)
+            if len(mute_list[muteid]) == 3:
+                return mute_list
+            else:
+                print(mute_list, str(3 - len(mute_list[muteid])) + ' left')
+    else:
+        mute_list[muteid] = [muter]
+        return mute_list
