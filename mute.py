@@ -42,14 +42,14 @@ def del_message(chat_id, message_id):
 
 
 # works with mute list
-def gen(mute_list, mute_id, muter):
+def gen(mute_list, mute_id, muter, chat_id):
     if mute_id in mute_list:
         if muter in mute_list[mute_id]:
             print('Already in list')
         else:
             mute_list[mute_id].append(muter)
             if len(mute_list[mute_id]) == 3:
-                return mute_list
+                restrict_user(chat_id, mute_id, timer(), False, False, False)
             else:
                 print(mute_list, str(3 - len(mute_list[mute_id])) + ' left')
     else:
