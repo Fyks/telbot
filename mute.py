@@ -1,3 +1,4 @@
+import methods
 import requests
 import time
 
@@ -24,7 +25,7 @@ def timer():
     return suspend_time
 
 
-# done
+# check messages for mute mark
 def checker(message):
     if 'mute' in message['text'].lower():
         user_id = message['from']['id']
@@ -33,23 +34,24 @@ def checker(message):
             return {user_id: reply_id}
 
 
-# done
+# delete message
 def del_message(chat_id, message_id):
     params = {'chat_id': chat_id,
               'message_id': message_id}
     return requests.get('deleteMessage', params)
 
 
-def gen(mute_list, muteid, muter):
-    if muteid in mute_list:
-        if muter in mute_list[muteid]:
+# works with mute list
+def gen(mute_list, mute_id, muter):
+    if mute_id in mute_list:
+        if muter in mute_list[mute_id]:
             print('Already in list')
         else:
-            mute_list[muteid].append(muter)
-            if len(mute_list[muteid]) == 3:
+            mute_list[mute_id].append(muter)
+            if len(mute_list[mute_id]) == 3:
                 return mute_list
             else:
-                print(mute_list, str(3 - len(mute_list[muteid])) + ' left')
+                print(mute_list, str(3 - len(mute_list[mute_id])) + ' left')
     else:
-        mute_list[muteid] = [muter]
+        mute_list[mute_id] = [muter]
         return mute_list
