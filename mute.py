@@ -1,3 +1,4 @@
+import methods
 import requests
 import teltoken
 import time
@@ -50,12 +51,12 @@ def del_message(chat_id, message_id):
 def gen(mute_list, mute_id, muter, chat_id):
     if mute_id in mute_list:
         if muter in mute_list[mute_id]:
-            print('Already in list')
+            methods.send_message(URL, chat_id, None, 'Already in list')
         else:
             mute_list[mute_id].append(muter)
             if len(mute_list[mute_id]) == 3:
-                restrict_user(chat_id, mute_id, timer(), False, False, False)
-                print('Done')
+                restrict_user(chat_id, mute_id, False, False, False, timer())
+                methods.send_message(URL, chat_id, None, mute_id + ' restricted')
             else:
                 print(mute_list, str(3 - len(mute_list[mute_id])) + ' left')
     else:
