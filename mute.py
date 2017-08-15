@@ -60,7 +60,7 @@ def gen(mute_list, mute_id, muter, chat_id):
             else:
                 left = str(3 - len(mute_list[mute_id]))
                 methods.send_message(URL, chat_id, None, left + ' left')
-                print(mute_list, str(3 - len(mute_list[mute_id])) + ' left')
     else:
         mute_list[mute_id] = [muter]
-        restrict_user(chat_id, mute_id, False, False, False, timer())
+        print(mute_list)
+        methods.send_message(URL, chat_id, None, 'start')
