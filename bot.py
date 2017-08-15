@@ -3,18 +3,10 @@ import mute
 import parcer
 import re
 import teltoken
-import time
 
 URL = "https://api.telegram.org/bot" + teltoken.TOKEN + '/'
 LIMIT = 10
 TIMEOUT = 10
-
-
-def del_message(chat_id, message_id):
-    params = {'chat_id': chat_id,
-              'message_id': message_id}
-    return methods.make_request(URL, 'deleteMessage', params)
-
 
 if __name__ == '__main__':
 
@@ -25,10 +17,9 @@ if __name__ == '__main__':
     mute_list = {}
 
     while True:
-        upd = methods.make_request(URL, 'getUpdates', params={
-            'limit': LIMIT,
-            'timeout': TIMEOUT,
-            'offset': update_id + 1})
+        upd = methods.make_request(URL, 'getUpdates', params={'limit': LIMIT,
+                                                              'timeout': TIMEOUT,
+                                                              'offset': update_id + 1})
 
         for i in upd:
             try:
