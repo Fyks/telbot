@@ -55,4 +55,4 @@ def gen(mute_list, mute_id, muter, chat_id):
                 print(mute_list, str(3 - len(mute_list[mute_id])) + ' left')
     else:
         mute_list[mute_id] = [muter]
-        return mute_list
+        print(mute_list)
