@@ -60,7 +60,7 @@ if __name__ == '__main__':
                         methods.send_message(URL, chat_id, message_id,
                                              'Add "\\" before keyword')
 
-                mute.checker(message)
+                mute.checker(message, mute_list)
 
             except KeyError:
                 print('Sticker')
