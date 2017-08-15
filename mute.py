@@ -49,7 +49,7 @@ def del_message(chat_id, message_id):
 # mute list redactor
 # дописать таймер и оповещения к голосованию
 def gen(mute_list, mute_id, muter, chat_id):
-    if mute_id in mute_list:
+    if mute_id in mute_list:  #
         if muter in mute_list[mute_id]:
             methods.send_message(URL, chat_id, None, 'Already in list')
         else:
