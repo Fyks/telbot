@@ -6,6 +6,7 @@ mute_count = {}
 mute_timer = {}
 
 
+# restrict method
 def restrict_user(chat_id, user_id, can_send_messages=None, can_send_media_messages=None,
                   can_send_other_messages=None, until_date=None):
     params = {'chat_id': chat_id,
@@ -17,14 +18,14 @@ def restrict_user(chat_id, user_id, can_send_messages=None, can_send_media_messa
     return requests.get('restrictChatMember', params)
 
 
-# done
+# return current unix time + 3 min
 def timer():
     t = time.gmtime()[:]
     suspend_time = time.mktime(t[:4] + (t[4]+3,) + t[5:])
     return suspend_time
 
 
-# check messages for mute mark
+# checker
 def checker(message, mute_list):
     if 'mute' in message['text'].lower():
         muter = message['from']['id']
@@ -34,14 +35,14 @@ def checker(message, mute_list):
             return gen(mute_list, mute_id, muter, chat_id)
 
 
-# delete message
+# delete method
 def del_message(chat_id, message_id):
     params = {'chat_id': chat_id,
               'message_id': message_id}
     return requests.get('deleteMessage', params)
 
 
-# works with mute list
+# mute list redactor
 def gen(mute_list, mute_id, muter, chat_id):
     if mute_id in mute_list:
         if muter in mute_list[mute_id]:
@@ -55,4 +56,3 @@ def gen(mute_list, mute_id, muter, chat_id):
     else:
         mute_list[mute_id] = [muter]
         return mute_list
-
