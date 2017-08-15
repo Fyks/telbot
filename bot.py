@@ -23,7 +23,6 @@ if __name__ == '__main__':
     update_id = 0
     mute_id = {}
     mute_list = {}
-    timestamp = time.gmtime()
 
     while True:
         upd = methods.make_request(URL, 'getUpdates', params={
