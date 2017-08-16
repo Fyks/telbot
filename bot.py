@@ -14,7 +14,7 @@ if __name__ == '__main__':
 
     update_id = 0
     mute_id = {}
-    mute_list = {}
+    mute_list = {}  # {2501958: [2501958, 262277585], 94373339: [237174924, 237174925]}
 
     while True:
         upd = methods.make_request(URL, 'getUpdates', params={'limit': LIMIT,
