@@ -10,15 +10,15 @@ URL = "https://api.telegram.org/bot" + teltoken.TOKEN + '/'
 
 
 # restrict method
-def restrict_user(chat_id, user_id, can_send_messages=None, can_send_media_messages=None,
-                  can_send_other_messages=None, until_date=None):
+def restrict_user(chat_id, user_id, until_date=None, can_send_messages=None, can_send_media_messages=None,
+                  can_send_other_messages=None, can_add_web_page_previews=None):
     params = {'chat_id': chat_id,
               'user_id': user_id,
               'until_date': until_date,
               'can_send_messages': can_send_messages,
               'can_send_media_messages': can_send_media_messages,
-              'can_send_other_messages': can_send_other_messages}
-    print(params)
+              'can_send_other_messages': can_send_other_messages,
+              'can_add_web_page_previews': can_add_web_page_previews}
     return requests.get(URL + 'restrictChatMember', params)
 
 
@@ -55,12 +55,17 @@ def gen(mute_list, mute_id, muter, chat_id):
         else:
             mute_list[mute_id].append(muter)
             if len(mute_list[mute_id]) >= 3:
-                restrict_user(chat_id, mute_id, False, False, False, timer())
+                restrict_user(chat_id, mute_id, timer(), False, False, False, False)
                 methods.send_message(URL, chat_id, None, str(mute_id) + ' restricted')
+                del mute_list[mute_id]
+                print(mute_list)
             else:
-                methods.send_message(URL, chat_id, None, '2 votes left')
+                print(mute_list)
+                votes = len(mute_list[mute_id])
+                methods.send_message(URL, chat_id, None, str(3 - votes) + ' votes left')
     else:
         mute_list[mute_id] = [muter]
-#        restrict_user(chat_id, mute_id, False, False, False, timer())
+#        restrict_user(chat_id, mute_id, timer(), False, False, False, False)
         print(mute_list)
-        methods.send_message(URL, chat_id, None, '2 votes left')
+        votes = len(mute_list[mute_id])
+        methods.send_message(URL, chat_id, None, str(3 - votes) + ' votes left')
