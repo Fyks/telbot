@@ -6,7 +6,7 @@ import time
 mute_list = {}
 mute_count = {}
 mute_timer = {}
-URL = "https://api.telegram.org/bot" + teltoken.TOKEN + '/'
+URL = 'https://api.telegram.org/bot' + teltoken.TOKEN + '/'
 
 
 # restrict method
