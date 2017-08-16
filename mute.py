@@ -26,7 +26,7 @@ def restrict_user(chat_id, user_id, can_send_messages=None, can_send_media_messa
 def timer():
     t = time.gmtime()[:]
     suspend_time = time.mktime(t[:4] + (t[4]+3,) + t[5:])
-    return suspend_time
+    return int(suspend_time)
 
 
 # checker
@@ -54,13 +54,13 @@ def gen(mute_list, mute_id, muter, chat_id):
             methods.send_message(URL, chat_id, None, 'Already in list')
         else:
             mute_list[mute_id].append(muter)
-            if len(mute_list[mute_id]) == 3:
+            if len(mute_list[mute_id]) >= 3:
                 restrict_user(chat_id, mute_id, False, False, False, timer())
                 methods.send_message(URL, chat_id, None, str(mute_id) + ' restricted')
             else:
-                left = str(3 - len(mute_list[mute_id]))
-                methods.send_message(URL, chat_id, None, left + ' left')
+                methods.send_message(URL, chat_id, None, '2 votes left')
     else:
         mute_list[mute_id] = [muter]
+#        restrict_user(chat_id, mute_id, False, False, False, timer())
         print(mute_list)
-        methods.send_message(URL, chat_id, None, 'start')
+        methods.send_message(URL, chat_id, None, '2 votes left')
