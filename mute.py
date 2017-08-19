@@ -30,13 +30,14 @@ def timer():
 
 
 # checker
-def checker(message, mute_list):
+def checker(message, mute_list, user):
     if 'mute' in message['text'].lower():
         muter = message['from']['id']
         if message['reply_to_message']['from']['id']:
             mute_id = message['reply_to_message']['from']['id']
             chat_id = message['chat']['id']
-            return gen(mute_list, mute_id, muter, chat_id)
+            username = message['message']['from']['first_name']
+            return gen(mute_list, mute_id, muter, chat_id, username)
 
 
 # delete method
@@ -48,7 +49,7 @@ def del_message(chat_id, message_id):
 
 # mute list redactor
 # дописать таймер и оповещения к голосованию
-def gen(mute_list, mute_id, muter, chat_id):
+def gen(mute_list, mute_id, muter, chat_id, username):
     if mute_id in mute_list:  #
         if muter in mute_list[mute_id]:
             methods.send_message(URL, chat_id, None, 'Already in list')
@@ -56,7 +57,7 @@ def gen(mute_list, mute_id, muter, chat_id):
             mute_list[mute_id].append(muter)
             if len(mute_list[mute_id]) >= 3:
                 restrict_user(chat_id, mute_id, timer(), False, False, False, False)
-                methods.send_message(URL, chat_id, None, str(mute_id) + ' restricted')
+                methods.send_message(URL, chat_id, None, username + ' restricted')
                 del mute_list[mute_id]
                 print(mute_list)
             else:
